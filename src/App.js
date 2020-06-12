@@ -7,12 +7,6 @@ import SignInAndSignUpPage from './components/sign-in-and-sign-up/sign-in-and-si
 import Header from './components/header/header.component.jsx'
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 
-
-
-
-
-
-
 class App extends React.Component {
   constructor(){
     super();
