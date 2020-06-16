@@ -9,43 +9,37 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { connect } from 'react-redux'
 import { setCurrentUser } from './redux/user/user.actions'
 class App extends React.Component {
+  unsubscribeFromAuth = null;
 
-unsubscribeFromAuth = null
-  
+  componentDidMount() {
+    const { setCurrentUser } = this.props;
 
-componentDidMount(){
-  const {setCurrentUser} = this.props 
- auth.onAuthStateChanged( async userAuth =>{
-   if(userAuth){
-     const userRef = await createUserProfileDocument(userAuth);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
 
-     userRef.onSnapshot(snapShot => {
-      setCurrentUser({ 
-         currentUser:{
-        id: snapShot.id,
-        ...snapShot.data()
-        }
-      }, 
-      )  
-     })
-    
-   }
-   setCurrentUser(
-          { userAuth }
-        ) 
+        userRef.onSnapshot(snapShot => {
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()
+          });
+        });
+      }
 
- })
+      setCurrentUser(userAuth);
+    });
   }
-componentWillUnmount(){
-  this.unsubscribeFromAuth();
-}
 
-  render(){
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
+  render() {
     return (
       <div>
+        <Header />
         <switch>
-          <Header />
-          <Route exact path="/" component={HomePage} />
+          <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
           <Route path='/signin' component={SignInAndSignUpPage} />
         </switch>
@@ -53,8 +47,12 @@ componentWillUnmount(){
     );
   }
 }
-const mapDispatchToProps = dispatch=> ({
- setCurrentUser: user => dispatch(setCurrentUser(user))
-})
 
-export default connect(null,mapDispatchToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
