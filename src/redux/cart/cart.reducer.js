@@ -15,11 +15,11 @@ const cartReducer = (state = INITAL_STATE, action) =>{
         case CartActionTypes.ADD_ITEM:
             return {
                 ...state,
-                cartItems: addItemToCart(state.cart)
-            }
-            default:
-            return state
+                cartItems: addItemToCart(state.cartItems, action.payload)
+            };
+        default:
+            return state;
     }
-}
+};
 
 export default cartReducer;
