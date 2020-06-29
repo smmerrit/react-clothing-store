@@ -6,19 +6,21 @@ import ShopPage from './pages/shop/shop.component.jsx'
 import CheckoutPage from './pages/checkout/checkout.component'
 import SignInAndSignUpPage from './components/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx'
 import Header from './components/header/header.component.jsx'
-import { auth, createUserProfileDocument } from './firebase/firebase.utils'
+import { auth, createUserProfileDocument} from './firebase/firebase.utils'
 import { connect } from 'react-redux'
 import { setCurrentUser } from './redux/user/user.actions'
 import { selectCurrentUser } from './redux/user/user.selector'
 import {createStructuredSelector} from 'reselect'
+
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
-
+    const { setCurrentUser} = this.props;
+//When auth state changes pass user auth object
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
+//if it exsists pass it to the creatuser profile document
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
@@ -64,6 +66,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector ({
   currentUser: selectCurrentUser
+
 });
 
 const mapDispatchToProps = dispatch => ({
