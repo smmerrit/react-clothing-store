@@ -1,5 +1,5 @@
 import {UserActionTypes} from './user.types'
-    import FormInput from "../../components/form-input/form-input.component";
+
 
 const INITAL_STATE = {
     currentUser: null
